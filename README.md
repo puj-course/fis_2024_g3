@@ -1,7 +1,7 @@
 # fis_2024_g3
 # Aplicación de Comunicación Interna y Gestión Empresarial
 
-#TeamConnect
+# TeamConnect
 
 ## 1. Socios Claves
 
