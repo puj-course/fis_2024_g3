@@ -1,5 +1,5 @@
 # fis_2024_g3
-# Modelo Canvas de Aplicación de Comunicación Interna y Gestión Empresarial
+# Aplicación de Comunicación Interna y Gestión Empresarial
 
 ## Socios Claves
 
