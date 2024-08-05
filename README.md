@@ -75,4 +75,5 @@
 - Suscripción Mensual/Anual
 - Licencias Empresariales
 - Servicios Adicionales
+- Es moderno
 
