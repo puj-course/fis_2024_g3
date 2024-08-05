@@ -1,3 +1,0 @@
-Si eres la o el desarrollador front-end, dejame decirte que es bueno que 
-vayas pensando en un framework web para nuestra api, es un proyecto
-pesado y largo asi que te aconsejo que vayas con tiempo. 
