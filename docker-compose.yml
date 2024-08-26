@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  postgres: 
+    image: 'postgres:latest'
+    container_name: postgres_container
+    restart: always
+    enviroment:
+    - POSTGRES_USER=savaged22
+    - POSTGRES_PASSWORD=secret
+    ports:
+    - '5432:5432'
+    volumes:
+    - '- db:/var/lib/posgresql/data'
+    
+volumes:
+  db:                        
