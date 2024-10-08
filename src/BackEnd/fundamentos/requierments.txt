@@ -1,0 +1,10 @@
+fastapi==0.95.1
+uvicorn[standard]==0.22.0  # Para correr el servidor de FastAPI
+pydantic==1.10.7  # Para la validación de datos
+motor==3.1.1  # Driver asíncrono para MongoDB
+pymongo==4.3.3  # Driver básico para MongoDB (si necesitas sincronía)
+python-jose==3.3.0  # Para manejar JWT (JSON Web Tokens) con OAuth2
+passlib[bcrypt]==1.7.4  # Para el manejo de encriptación de contraseñas
+oauthlib==3.2.2  # Para manejar OAuth2
+httpx==0.24.0  # Cliente HTTP asíncrono compatible con OAuth2
+dnspython==2.3.0  # Para la conexión a MongoDB Atlas si usas MongoDB en la nube
