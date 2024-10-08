@@ -1,11 +1,30 @@
 package com.example.teamconnect_api.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+import java.util.Collection;
 import java.util.Set;
 
-@Entity
+import org.hibernate.annotations.DialectOverride.OverridesAnnotation;
+import org.hibernate.mapping.List;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.example.teamconnect_api.enums.EmpleadoROle;
+
+@Entity(name = "Empleados")
 @Table(name = "Empleados")
-public class Empleado {
+//@NoArgsConstructor
+//@AllArgsConstructor
+//@EqualsAndHashCode(of = "empleado_id")
+
+public class Empleado implements UserDetails{
+
+    private String login;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,10 +39,17 @@ public class Empleado {
 
     @Column(name = "codigo", nullable = false, unique = true, length = 10)
     private String codigo;
+    
+    @Column(name = "email",nullable = false, unique = true, length = 50)
+    private String email;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rol_id", nullable = false)
-    private Rol rol;
+    @Column(name = "password",nullable = false, unique = true, length = 100)
+    private String password;
+
+    // @ManyToOne(fetch = FetchType.LAZY)
+    // @JoinColumn(name = "rol_id", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private EmpleadoROle rol;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "depto_id", nullable = false)
@@ -38,6 +64,27 @@ public class Empleado {
     @OneToMany(mappedBy = "empleado")
     private Set<ParticipantesChat> participantesChats;
 
+    //Constructor.
+    public Empleado(int id, String nombre, String apellido, String codigo, String email, String password, EmpleadoROle rol,
+    Departamento departamento, Set<Mensaje> mensajes, Set<Tarea> tareas,
+    Set<ParticipantesChat> participantesChats, String login) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.codigo = codigo;
+        this.email = email;
+        this.password = password;
+        this.rol = rol;
+        this.departamento = departamento;
+        this.mensajes = mensajes;
+        this.tareas = tareas;
+        this.participantesChats = participantesChats;
+        this.login = login;
+    }
+
+    
+    
+ 
     public int getId() {
         return id;
     }
@@ -70,11 +117,23 @@ public class Empleado {
         this.codigo = codigo;
     }
 
-    public Rol getRol() {
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public EmpleadoROle getRol() {
         return rol;
     }
 
-    public void setRol(Rol rol) {
+    public void setRol(EmpleadoROle rol) {
         this.rol = rol;
     }
 
@@ -108,5 +167,37 @@ public class Empleado {
 
     public void setParticipantesChats(Set<ParticipantesChat> participantesChats) {
         this.participantesChats = participantesChats;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(this.rol == EmpleadoROle.GERENTE){
+            return List.of(new SimpleGrantedAuthority("ROLE_GERENTE"), new SimpleGrantedAuthority("ROLE_EMPLEADO"));
+        }
+        if(this.rol == EmpleadoROle.LIDER){
+            return List.of(new SimpleGrantedAuthority("ROLE_LIDER"), new SimpleGrantedAuthority("ROLE_EMPLEADO"));
+        }
+        return List.of(new SimpleGrantedAuthority("ROLE_EMPLEADO"));
+    }
+
+    @Override
+    public String getUsername() {return login;}
+
+    @Override 
+    public boolean isAccountNonExpired(){return true;}
+
+    @Override
+    public boolean isAccountNonLocked(){return true;}
+
+    @Override 
+    public boolean isCredentialsNonExpired(){return true;}
+
+    @Override
+    public boolean isEnabled(){return true;}
+
+    @Override
+    public String getPassword() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getPassword'");
     }
 }
