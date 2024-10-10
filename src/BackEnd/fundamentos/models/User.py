@@ -9,5 +9,6 @@ class User(BaseModel):
     email: EmailStr
     password_hash: str
     role: Role
+    number: str
     projects: List[str]
     tasks: List[str]

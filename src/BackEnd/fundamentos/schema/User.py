@@ -27,6 +27,7 @@ class UserBase(BaseModel):
     lastname: str = Field(..., example="Perez")
     email: EmailStr = Field(..., example="juan.perez@example.com")
     role: Role = Field(..., example=Role.empleado)
+    number:str= Field(...,example="+573195762654")
     projects: List[PyObjectId] = []
     tasks: List[PyObjectId] = []
 
@@ -54,5 +55,6 @@ class UserUpdate(UserBase):
     lastname: str = Field(..., example="Perez")
     email: EmailStr = Field(..., example="juan.perez@example.com")
     role: Role = Field(..., example=Role.empleado)
+    number:str = Field(...,example="+573195762654")
     projects: List[PyObjectId] = []
     tasks: List[PyObjectId] = []

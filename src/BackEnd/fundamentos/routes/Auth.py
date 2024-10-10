@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from schema.User import UserCreate, UserInDB, UserLogin
 from schema.Token import Token
+from twilio.rest import Client
 from database.Database import db
 from models.User import User
 from core.security import verify_password, get_password_hash, create_access_token
@@ -13,6 +14,20 @@ from bson import ObjectId
 router = APIRouter(
     tags=["auth"]
 )
+
+def send_welcome_sms(phone_number: str, user_name: str):
+    client = Client(settings.tw_Sid,settings.tw_token)
+    try:
+        message = client.messages.create(
+            body=f"Bienvenido {user_name} a TeamConnect, tu cuenta ha sido creada exitosamente.",
+            from_=settings.tw_number,
+            to=phone_number<
+        )
+
+        print(f"SMS enviado con éxito a {phone_number}. SID del mensaje: {message.sid}")
+    except Exception as e:
+        print(f"Error al enviar SMS: {str(e)}")
+
 
 @router.post("/register", response_model=UserInDB)
 async def register(user: UserCreate):
@@ -34,7 +49,11 @@ async def register(user: UserCreate):
     
     result = await db.db.users.insert_one(user_dict)
     created_user = await db.db.users.find_one({"_id": result.inserted_id})
-    
+
+    print("LLegamos aqui")
+
+    send_welcome_sms(user.number,user.name)
+
     return created_user
 
 
