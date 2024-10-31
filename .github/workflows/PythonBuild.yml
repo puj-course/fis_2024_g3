@@ -32,6 +32,6 @@ jobs:
         pip install -r src/BackEnd/fundamentos/requierments.txt
     - name: build with uvicorn
       run: |
-        source venv/bin/activate
+        source .space_backend/bin/activate
         uvicorn main:app --reload --port 3000
         
