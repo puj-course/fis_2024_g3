@@ -33,5 +33,5 @@ jobs:
     - name: build with uvicorn
       run: |
         source .space_backend/bin/activate
-        uvicorn src/BackEnd/fundamentos/main:app --reload --port 3000
+        uvicorn src.BackEnd.fundamentos.main:app --reload --port 3000
         
