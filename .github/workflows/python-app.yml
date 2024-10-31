@@ -28,7 +28,7 @@ jobs:
       run: |
         python3 -m pip install --upgrade pip
         python3 -m venv .space_backend
-        source venv/bin/activate
+        source .space_backend/bin/activate
         pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: build with uvicorn
