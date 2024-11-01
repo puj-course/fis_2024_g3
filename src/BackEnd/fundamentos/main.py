@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from .database.Database import db
-from routes import Auth, User  # Importa otros routers según tu proyecto
+from .routes import Auth, User  # Importa otros routers según tu proyecto
 
 app = FastAPI(
     title="API TEAMCONNECT",
