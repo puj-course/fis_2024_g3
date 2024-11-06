@@ -21,7 +21,7 @@ def send_welcome_sms(phone_number: str, user_name: str):
         message = client.messages.create(
             body=f"Bienvenido {user_name} a TeamConnect, tu cuenta ha sido creada exitosamente.",
             from_=settings.tw_number,
-            to=phone_number<
+            to=phone_number
         )
 
         print(f"SMS enviado con éxito a {phone_number}. SID del mensaje: {message.sid}")
@@ -49,8 +49,6 @@ async def register(user: UserCreate):
     
     result = await db.db.users.insert_one(user_dict)
     created_user = await db.db.users.find_one({"_id": result.inserted_id})
-
-    print("LLegamos aqui")
 
     send_welcome_sms(user.number,user.name)
 

@@ -11,6 +11,6 @@ class Settings(BaseSettings):
     tw_number:str = Field(..., env='TWILIO_PHONE_NUMBER')
 
     class Config:
-        env_file = ".env"
+        env_file = "./.env"
 
 settings = Settings()

@@ -1,3 +1,4 @@
+from ast import List
 from fastapi import APIRouter, Depends, HTTPException, status
 from schema.Task import TaskCreate, TaskInDB, TaskUpdate
 from dependencies.Auth import is_lider_or_higher, get_current_user
@@ -56,3 +57,27 @@ async def update_task(task_id: str, task: TaskUpdate, current_user: dict = Depen
         return TaskInDB(**updated_task)
 
     raise HTTPException(status_code=400, detail="No se pudo actualizar la tarea.")
+
+
+@router.post("/tasks/assign", status_code=status.HTTP_200_OK)
+async def assign_task(task_id: str, user_ids: List[str], current_user: dict = Depends(get_current_user)):
+    # Verificar que el usuario actual sea líder o gerente
+    if not is_lider_or_higher(current_user):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="No tienes permisos para asignar tareas")
+    
+    # Verificar que la tarea existe
+    task = await db.tasks.find_one({"id": task_id})
+    if not task:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Tarea no encontrada")
+    
+    # Asignar la tarea a los usuarios
+    for user_id in user_ids:
+        user = await db.users.find_one({"id": user_id})
+        if user:
+            # Añadir la tarea al usuario y actualizar la tarea
+            await db.users.update_one({"id": user_id}, {"$push": {"tasks": task_id}})
+            await db.tasks.update_one({"id": task_id}, {"$addToSet": {"users": user_id}})
+        else:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Usuario {user_id} no encontrado")
+    
+    return {"message": "Tarea asignada correctamente"}
