@@ -1,11 +1,14 @@
-from ast import List
+from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 from schema.Task import TaskCreate, TaskInDB, TaskUpdate
 from dependencies.Auth import is_lider_or_higher, get_current_user
 from database.Database import db
 from bson import ObjectId
 
-router = APIRouter()
+router = APIRouter(
+    tags=["tasks"]
+)
+
 
 @router.post("/tasks/", response_model=TaskInDB, dependencies=[Depends(is_lider_or_higher)])
 async def create_task(task: TaskCreate):
@@ -81,3 +84,19 @@ async def assign_task(task_id: str, user_ids: List[str], current_user: dict = De
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Usuario {user_id} no encontrado")
     
     return {"message": "Tarea asignada correctamente"}
+
+@router.get("/tasks/assigned", response_model=List[TaskInDB]) 
+async def get_assigned_tasks(current_user: dict = Depends(get_current_user)):
+    # Obtener las tareas asignadas al usuario actual
+    tasks = await db.db.tasks.find({"users": current_user.id}).to_list(length=100)
+    return {"message": "Tareas asignadas"}
+
+
+@router.patch("/tasks/{task_id}/status")
+async def update_task_status(task_id: str, status: str, current_user: dict = Depends(get_current_user)):
+    task = await db.db.tasks.find_one({"_id": task_id, "users": current_user["id"]})
+    if not task:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Task not found")
+    
+    await db.db.tasks.update_one({"_id": task_id}, {"$set": {"status": status}})
+    return {"status": "updated"}

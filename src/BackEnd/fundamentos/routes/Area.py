@@ -5,7 +5,9 @@ from typing import List
 from bson import ObjectId
 from dependencies.Auth import is_admin
 
-router = APIRouter()
+router = APIRouter(
+    tags=["area"]
+)
 
 @router.post("/areas/", response_model=AreaInDB, dependencies=[Depends(is_admin)])
 async def create_area(area: AreaCreate):

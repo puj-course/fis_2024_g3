@@ -1,7 +1,7 @@
 from enum import Enum
 class Status(str,Enum):
-    prepared = "Prepared"
-    active = "Active"
-    onGoing = "OnGoing"
-    finish = "Finished"
-    pendiente = "Pendiente"
+    PREPARED = "Prepared"
+    ACTIVE = "Active"
+    ONGOING = "Ongoing"
+    FINISHED = "Finished"
+    PENDING = "Pending"

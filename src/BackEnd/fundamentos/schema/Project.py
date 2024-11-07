@@ -11,7 +11,8 @@ class ProjectBase(BaseModel):
         "name": "Departamento de Desarrollo",
         "description": "Responsable del desarrollo de software",
         "users": ["user_id_1", "user_id_2"],
-        "projects": ["project_id_1", "project_id_2"]
+        "projects": ["project_id_1", "project_id_2"],
+        "status" : "Prepared"
     })
     users: List[str] = Field(..., example=["user_id_1", "user_id_2"])
 

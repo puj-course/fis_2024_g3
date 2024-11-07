@@ -1,5 +1,6 @@
 # routers/auth.py
 from datetime import timedelta
+import pdb
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from schema.User import UserCreate, UserInDB, UserLogin
@@ -80,5 +81,7 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
         data={"sub": str(user["_id"])},
         expires_delta=access_token_expires
     )
-    
-    return {"access_token": access_token, "token_type": "bearer"}
+    pdb.set_trace()
+    # Devolver el token, tipo de token y rol del usuario
+    return {"access_token": access_token, "token_type": "bearer", "role": user["role"]}
+
