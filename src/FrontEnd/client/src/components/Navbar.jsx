@@ -21,7 +21,7 @@ function Navbar() {
         {/* Mostrar el botón de "Registrar Empleado" solo si el usuario está en la página de login o en la página principal */}
         {(location.pathname === "/" || location.pathname === "/login") && (
           <Link
-            to="/register-employee"
+            to="/register"
             className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
           >
             Registrar Empleado
@@ -49,3 +49,28 @@ function Navbar() {
 }
 
 export default Navbar;
+
+
+
+
+// // src/components/Navbar.jsx
+// import React from 'react';
+// import { Link } from 'react-router-dom';
+
+// const Navbar = () => {
+//   return (
+//     <nav className="flex items-center justify-between p-4 bg-gray-800 text-white">
+//       <Link to="/" className="text-2xl font-bold">Team Connect</Link>
+//       <div className="space-x-4">
+//         <Link to="/login" className="bg-blue-500 px-3 py-2 rounded hover:bg-blue-600">
+//           Iniciar Sesión
+//         </Link>
+//         <Link to="/register" className="bg-green-500 px-3 py-2 rounded hover:bg-green-600">
+//           Registrarse
+//         </Link>
+//       </div>
+//     </nav>
+//   );
+// };
+
+// export default Navbar;

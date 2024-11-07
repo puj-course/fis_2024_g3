@@ -1,25 +1,67 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import TaskForm from "./pages/TaskForm";
-import Navbar from "./components/Navbar";
-import LoginPage from "./pages/LoginPage";
-import RegisterEmployee from "./pages/RegisterEmployee"; // Asegúrate de importar el componente
-
-function App() {
+// src/App.jsx
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import LandingPage from './components/LandingPage';
+import LoginPage from './pages/LoginPage';
+import RegisterEmployee from './pages/RegisterEmployee';
+import EmployeeDashboard from './components/dashboard/EmployeeDashboard';
+import AdminDashboard from './components/dashboard/AdminDashboard';
+import ManagerDashboard from './components/dashboard/ManagerDashboard';
+import LeaderDashboard from './components/dashboard/LeaderDashboard';
+import ProtectedRoute from './components/ProtectedRoute';
+import NotAuthorized from './pages/NotAuthorized';
+const App = () => {
   return (
-    <BrowserRouter>
-      <div className="container mx-auto px-10">
+    <Router>
+      <div className="bg-gray-900 min-h-screen text-white">
         <Navbar />
         <Routes>
+          <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/" element={<HomePage />} />
-          <Route path="/tasks/:id" element={<TaskForm />} />
-          <Route path="/tasks/new" element={<TaskForm />} />
-          <Route path="/register-employee" element={<RegisterEmployee />} /> {/* Ruta para Registrar Empleado */}
+          <Route path="/register" element={<RegisterEmployee />} />
+          
+          <Route
+            path="/admin-dashboard"
+            element={
+              <ProtectedRoute allowedRoles={['Admin']}>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/manager-dashboard"
+            element={
+              <ProtectedRoute allowedRoles={['Gerente', 'Admin']}>
+                <ManagerDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/leader-dashboard"
+            element={
+              <ProtectedRoute allowedRoles={['Líder', 'Gerente', 'Admin']}>
+                <LeaderDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/employee-dashboard"
+            element={
+              <ProtectedRoute allowedRoles={['Empleado', 'Líder', 'Gerente', 'Admin']}>
+                <EmployeeDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route path="/not-authorized" element={<NotAuthorized />} />
+
         </Routes>
       </div>
-    </BrowserRouter>
+    </Router>
   );
-}
+};
 
 export default App;
+
+
